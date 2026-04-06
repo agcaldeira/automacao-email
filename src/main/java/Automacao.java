@@ -7,7 +7,7 @@ public class Automacao {
 	// >>>>>  - O nome do arquivo                <<<<<
 	// >>>>>  - O PERIORO na classe EmailService <<<<<
 
-    private static final String DEFAULT_EXCEL = "C:\\Users\\agcal\\Dropbox\\EasyCall_Comercial\\2. Financeiro\\Controle de Mensalidade_cobrança mensal\\2026-03 - Mensalidade.xlsx";
+    private static final String DEFAULT_EXCEL = "C:\\Users\\agcal\\Dropbox\\EasyCall_Comercial\\2. Financeiro\\Controle de Mensalidade_cobrança mensal\\2026-04 - Mensalidade.xlsx";
 
     // SMTP Zoho
     private static final String ZOHO_SMTP_USER = System.getenv("ZOHO_SMTP_USER"); // seu@seudominio.com

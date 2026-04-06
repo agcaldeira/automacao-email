@@ -128,6 +128,9 @@ public class SendEmailsJob implements Job {
 
 		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Consultas Boa Vista", c.qtdConsultas, formatCurrency(c.valUnitConsulta), formatCurrency(c.totalConsultas)));
 
+		// Serasa (nova linha)
+		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Serasa", c.qtdSerasa, formatCurrency(c.valUnitSerasa), formatCurrency(c.totalSerasa)));
+
 		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Negativação", c.qtdNeg, formatCurrency(c.valUnitNeg), formatCurrency(c.totalNeg)));
 
 		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Exclusão de Negativação", c.qtdExc, formatCurrency(c.valUnitExc), formatCurrency(c.totalExc)));

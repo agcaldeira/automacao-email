@@ -24,15 +24,15 @@ public class EmailService {
 
 	private static final String SMTP_HOST = "smtp.zoho.com";
 	private static final int SMTP_PORT = 587;
-	private static final String PERIORO = "02/2026";
+	private static final String PERIORO = "03/2026";
 	
 
 	private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
 
 	public static void sendEmailWithAttachment(String smtpUser, String smtpPass, String imapUser, String imapPass, ClientInvoice c) throws Exception {
 		
-		// Random entre 20 e 45 segundos por conta do último bloqueio
-		int delay = ThreadLocalRandom.current().nextInt(20000, 45000); 
+		// Random entre 45 e 99 segundos por conta do último bloqueio
+		int delay = ThreadLocalRandom.current().nextInt(45000, 99000); 
 		System.out.println("⏳ Aguardando " + (delay / 1000.0) + " segundos antes do próximo envio...");
 		Thread.sleep(delay);
 
@@ -96,6 +96,10 @@ public class EmailService {
 		sb.append(String.format(
 		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Consultas Boa Vista</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
 		    c.qtdConsultas, formatCurrency(c.valUnitConsulta), formatCurrency(c.totalConsultas)));
+
+		sb.append(String.format(
+		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Serasa</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		    c.qtdSerasa, formatCurrency(c.valUnitSerasa), formatCurrency(c.totalSerasa)));
 
 		sb.append(String.format(
 		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Negativação</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",

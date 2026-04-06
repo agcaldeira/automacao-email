@@ -15,11 +15,20 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelReader {
 
-	// Assumimos que as novas colunas vêm após a coluna 17 (0-based):
-	// 18 -> Status (ex: "Pendente" / "Enviado")
-	// 19 -> Timestamp do envio
-	private static final int STATUS_COLUMN_DEFAULT = 18;
-	private static final int TIMESTAMP_COLUMN_DEFAULT = 19;
+	// Nova ordem: agora há 3 colunas Serasa entre Consultas e Negativação
+	// Índices 0-based aproximados (caso não haja header legível):
+	// 0..5 = até Total Consultas
+	// 6 = Qtd Serasa
+	// 7 = Unit Serasa
+	// 8 = Total Serasa
+	// 9..17 = resto até Arquivo
+	// 18 = Mensalidade (antes era 15)
+	// 19 = Total Final (antes 16)
+	// 20 = Arquivo (antes 17)
+	// 21 = Status (antes 18)
+	// 22 = Timestamp (antes 19)
+	private static final int STATUS_COLUMN_DEFAULT = 21;
+	private static final int TIMESTAMP_COLUMN_DEFAULT = 22;
 
 	public static List<ClientInvoice> readClients(String path) {
 		List<ClientInvoice> clientes = new ArrayList<>();
@@ -59,29 +68,35 @@ public class ExcelReader {
 					continue;
 				}
 
-				// Leitura por índice de coluna (0-based)
+				// Leitura por índice de coluna (0-based) - atualizado com Serasa
 				String nome = getCellString(row.getCell(0));
 				String cnpj = getCellString(row.getCell(1));
 				String email = getCellString(row.getCell(2));
 				Integer qtdConsultas = getCellInteger(row.getCell(3));
 				BigDecimal valUnitConsulta = getCellDecimal(row.getCell(4));
 				BigDecimal totalConsultas = getCellDecimal(row.getCell(5));
-				Integer qtdNeg = getCellInteger(row.getCell(6));
-				BigDecimal valUnitNeg = getCellDecimal(row.getCell(7));
-				BigDecimal totalNeg = getCellDecimal(row.getCell(8));
-				Integer qtdExc = getCellInteger(row.getCell(9));
-				BigDecimal valUnitExc = getCellDecimal(row.getCell(10));
-				BigDecimal totalExc = getCellDecimal(row.getCell(11));
-				Integer qtdSms = getCellInteger(row.getCell(12));
-				BigDecimal valUnitSms = getCellDecimal(row.getCell(13));
-				BigDecimal totalSms = getCellDecimal(row.getCell(14));
-				BigDecimal mensalidade = getCellDecimal(row.getCell(15));
-				BigDecimal totalFinal = getCellDecimal(row.getCell(16));
-				String arquivo = getCellString(row.getCell(17));
+				Integer qtdSerasa = getCellInteger(row.getCell(6));
+				BigDecimal valUnitSerasa = getCellDecimal(row.getCell(7));
+				BigDecimal totalSerasa = getCellDecimal(row.getCell(8));
+				Integer qtdNeg = getCellInteger(row.getCell(9));
+				BigDecimal valUnitNeg = getCellDecimal(row.getCell(10));
+				BigDecimal totalNeg = getCellDecimal(row.getCell(11));
+				Integer qtdExc = getCellInteger(row.getCell(12));
+				BigDecimal valUnitExc = getCellDecimal(row.getCell(13));
+				BigDecimal totalExc = getCellDecimal(row.getCell(14));
+				Integer qtdSms = getCellInteger(row.getCell(15));
+				BigDecimal valUnitSms = getCellDecimal(row.getCell(16));
+				BigDecimal totalSms = getCellDecimal(row.getCell(17));
+				BigDecimal mensalidade = getCellDecimal(row.getCell(18));
+				BigDecimal totalFinal = getCellDecimal(row.getCell(19));
+				String arquivo = getCellString(row.getCell(20));
 
 				// Calcula totais quando ausentes
 				if (totalConsultas == null && qtdConsultas != null && valUnitConsulta != null) {
 					totalConsultas = valUnitConsulta.multiply(BigDecimal.valueOf(qtdConsultas));
+				}
+				if (totalSerasa == null && qtdSerasa != null && valUnitSerasa != null) {
+					totalSerasa = valUnitSerasa.multiply(BigDecimal.valueOf(qtdSerasa));
 				}
 				if (totalNeg == null && qtdNeg != null && valUnitNeg != null) {
 					totalNeg = valUnitNeg.multiply(BigDecimal.valueOf(qtdNeg));
@@ -96,6 +111,8 @@ public class ExcelReader {
 					totalFinal = BigDecimal.ZERO;
 					if (totalConsultas != null)
 						totalFinal = totalFinal.add(totalConsultas);
+					if (totalSerasa != null)
+						totalFinal = totalFinal.add(totalSerasa);
 					if (totalNeg != null)
 						totalFinal = totalFinal.add(totalNeg);
 					if (totalExc != null)
@@ -106,7 +123,7 @@ public class ExcelReader {
 						totalFinal = totalFinal.add(mensalidade);
 				}
 
-				ClientInvoice ci = new ClientInvoice(nome, cnpj, email, safeInt(qtdConsultas), valUnitConsulta, totalConsultas, safeInt(qtdNeg), valUnitNeg, totalNeg, safeInt(qtdExc), valUnitExc, totalExc, safeInt(qtdSms), valUnitSms, totalSms, mensalidade, totalFinal, arquivo, row.getRowNum(), path);
+				ClientInvoice ci = new ClientInvoice(nome, cnpj, email, safeInt(qtdConsultas), valUnitConsulta, totalConsultas, safeInt(qtdSerasa), valUnitSerasa, totalSerasa, safeInt(qtdNeg), valUnitNeg, totalNeg, safeInt(qtdExc), valUnitExc, totalExc, safeInt(qtdSms), valUnitSms, totalSms, mensalidade, totalFinal, arquivo, row.getRowNum(), path);
 				clientes.add(ci);
 			}
 

@@ -1,4 +1,3 @@
-
 import java.math.BigDecimal;
 
 public class ClientInvoice {
@@ -8,6 +7,10 @@ public class ClientInvoice {
         int qtdConsultas;
         BigDecimal valUnitConsulta;
         BigDecimal totalConsultas;
+        // Serasa
+        int qtdSerasa;
+        BigDecimal valUnitSerasa;
+        BigDecimal totalSerasa;
         int qtdNeg;
         BigDecimal valUnitNeg;
         BigDecimal totalNeg;
@@ -26,6 +29,7 @@ public class ClientInvoice {
 
         public ClientInvoice(String nome, String cnpj, String email,
                              int qtdConsultas, BigDecimal valUnitConsulta, BigDecimal totalConsultas,
+                             int qtdSerasa, BigDecimal valUnitSerasa, BigDecimal totalSerasa,
                              int qtdNeg, BigDecimal valUnitNeg, BigDecimal totalNeg,
                              int qtdExc, BigDecimal valUnitExc, BigDecimal totalExc,
                              int qtdSms, BigDecimal valUnitSms, BigDecimal totalSms,
@@ -37,6 +41,9 @@ public class ClientInvoice {
             this.qtdConsultas = qtdConsultas;
             this.valUnitConsulta = valUnitConsulta;
             this.totalConsultas = totalConsultas;
+            this.qtdSerasa = qtdSerasa;
+            this.valUnitSerasa = valUnitSerasa;
+            this.totalSerasa = totalSerasa;
             this.qtdNeg = qtdNeg;
             this.valUnitNeg = valUnitNeg;
             this.totalNeg = totalNeg;
