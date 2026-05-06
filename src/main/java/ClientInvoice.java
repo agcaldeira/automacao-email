@@ -20,6 +20,10 @@ public class ClientInvoice {
         int qtdSms;
         BigDecimal valUnitSms;
         BigDecimal totalSms;
+        // NF-e (nota fiscal)
+        int qtdNf;
+        BigDecimal valUnitNf;
+        BigDecimal totalNf;
         BigDecimal mensalidade;
         BigDecimal totalFinal;
         String arquivo; // caminho do boleto
@@ -33,6 +37,7 @@ public class ClientInvoice {
                              int qtdNeg, BigDecimal valUnitNeg, BigDecimal totalNeg,
                              int qtdExc, BigDecimal valUnitExc, BigDecimal totalExc,
                              int qtdSms, BigDecimal valUnitSms, BigDecimal totalSms,
+                             int qtdNf, BigDecimal valUnitNf, BigDecimal totalNf,
                              BigDecimal mensalidade, BigDecimal totalFinal, String arquivo,
                              int excelRowIndex, String sourceExcelPath) {
             this.nome = nome;
@@ -53,6 +58,9 @@ public class ClientInvoice {
             this.qtdSms = qtdSms;
             this.valUnitSms = valUnitSms;
             this.totalSms = totalSms;
+            this.qtdNf = qtdNf;
+            this.valUnitNf = valUnitNf;
+            this.totalNf = totalNf;
             this.mensalidade = mensalidade;
             this.totalFinal = totalFinal;
             this.arquivo = arquivo;

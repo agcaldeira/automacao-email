@@ -15,20 +15,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelReader {
 
-	// Nova ordem: agora há 3 colunas Serasa entre Consultas e Negativação
-	// Índices 0-based aproximados (caso não haja header legível):
-	// 0..5 = até Total Consultas
-	// 6 = Qtd Serasa
-	// 7 = Unit Serasa
-	// 8 = Total Serasa
-	// 9..17 = resto até Arquivo
-	// 18 = Mensalidade (antes era 15)
-	// 19 = Total Final (antes 16)
-	// 20 = Arquivo (antes 17)
-	// 21 = Status (antes 18)
-	// 22 = Timestamp (antes 19)
-	private static final int STATUS_COLUMN_DEFAULT = 21;
-	private static final int TIMESTAMP_COLUMN_DEFAULT = 22;
+	// Atualizado para novo layout com colunas NF-e e deslocamento de status/timestamp
+	private static final int STATUS_COLUMN_DEFAULT = 24;
+	private static final int TIMESTAMP_COLUMN_DEFAULT = 25;
 
 	public static List<ClientInvoice> readClients(String path) {
 		List<ClientInvoice> clientes = new ArrayList<>();
@@ -68,7 +57,7 @@ public class ExcelReader {
 					continue;
 				}
 
-				// Leitura por índice de coluna (0-based) - atualizado com Serasa
+				// Leitura por índice de coluna (0-based) - conforme nova ordem informada
 				String nome = getCellString(row.getCell(0));
 				String cnpj = getCellString(row.getCell(1));
 				String email = getCellString(row.getCell(2));
@@ -87,9 +76,13 @@ public class ExcelReader {
 				Integer qtdSms = getCellInteger(row.getCell(15));
 				BigDecimal valUnitSms = getCellDecimal(row.getCell(16));
 				BigDecimal totalSms = getCellDecimal(row.getCell(17));
-				BigDecimal mensalidade = getCellDecimal(row.getCell(18));
-				BigDecimal totalFinal = getCellDecimal(row.getCell(19));
-				String arquivo = getCellString(row.getCell(20));
+				// NF-e
+				Integer qtdNf = getCellInteger(row.getCell(18));
+				BigDecimal valUnitNf = getCellDecimal(row.getCell(19));
+				BigDecimal totalNf = getCellDecimal(row.getCell(20));
+				BigDecimal mensalidade = getCellDecimal(row.getCell(21));
+				BigDecimal totalFinal = getCellDecimal(row.getCell(22));
+				String arquivo = getCellString(row.getCell(23));
 
 				// Calcula totais quando ausentes
 				if (totalConsultas == null && qtdConsultas != null && valUnitConsulta != null) {
@@ -107,6 +100,9 @@ public class ExcelReader {
 				if (totalSms == null && qtdSms != null && valUnitSms != null) {
 					totalSms = valUnitSms.multiply(BigDecimal.valueOf(qtdSms));
 				}
+				if (totalNf == null && qtdNf != null && valUnitNf != null) {
+					totalNf = valUnitNf.multiply(BigDecimal.valueOf(qtdNf));
+				}
 				if (totalFinal == null) {
 					totalFinal = BigDecimal.ZERO;
 					if (totalConsultas != null)
@@ -119,11 +115,13 @@ public class ExcelReader {
 						totalFinal = totalFinal.add(totalExc);
 					if (totalSms != null)
 						totalFinal = totalFinal.add(totalSms);
+					if (totalNf != null)
+						totalFinal = totalFinal.add(totalNf);
 					if (mensalidade != null)
 						totalFinal = totalFinal.add(mensalidade);
 				}
 
-				ClientInvoice ci = new ClientInvoice(nome, cnpj, email, safeInt(qtdConsultas), valUnitConsulta, totalConsultas, safeInt(qtdSerasa), valUnitSerasa, totalSerasa, safeInt(qtdNeg), valUnitNeg, totalNeg, safeInt(qtdExc), valUnitExc, totalExc, safeInt(qtdSms), valUnitSms, totalSms, mensalidade, totalFinal, arquivo, row.getRowNum(), path);
+				ClientInvoice ci = new ClientInvoice(nome, cnpj, email, safeInt(qtdConsultas), valUnitConsulta, totalConsultas, safeInt(qtdSerasa), valUnitSerasa, totalSerasa, safeInt(qtdNeg), valUnitNeg, totalNeg, safeInt(qtdExc), valUnitExc, totalExc, safeInt(qtdSms), valUnitSms, totalSms, safeInt(qtdNf), valUnitNf, totalNf, mensalidade, totalFinal, arquivo, row.getRowNum(), path);
 				clientes.add(ci);
 			}
 

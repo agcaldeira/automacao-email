@@ -126,16 +126,32 @@ public class SendEmailsJob implements Job {
 		// Mensalidade (sem quantidade)
 		sb.append(String.format("%-30s\t%-12s\t%-18s\t%s\n", "Mensalidade", "", "", currencyFormat.format(c.mensalidade != null ? c.mensalidade : BigDecimal.ZERO)));
 
-		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Consultas Boa Vista", c.qtdConsultas, formatCurrency(c.valUnitConsulta), formatCurrency(c.totalConsultas)));
+		// Consultas
+		if (c.qtdConsultas > 0) {
+			sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Consultas Boa Vista", c.qtdConsultas, formatCurrency(c.valUnitConsulta), formatCurrency(c.totalConsultas)));
+		}
 
 		// Serasa (nova linha)
-		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Serasa", c.qtdSerasa, formatCurrency(c.valUnitSerasa), formatCurrency(c.totalSerasa)));
+		if (c.qtdSerasa > 0) {
+			sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Serasa", c.qtdSerasa, formatCurrency(c.valUnitSerasa), formatCurrency(c.totalSerasa)));
+		}
 
-		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Negativação", c.qtdNeg, formatCurrency(c.valUnitNeg), formatCurrency(c.totalNeg)));
+		if (c.qtdNeg > 0) {
+			sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Negativação", c.qtdNeg, formatCurrency(c.valUnitNeg), formatCurrency(c.totalNeg)));
+		}
 
-		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Exclusão de Negativação", c.qtdExc, formatCurrency(c.valUnitExc), formatCurrency(c.totalExc)));
+		if (c.qtdExc > 0) {
+			sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "Exclusão de Negativação", c.qtdExc, formatCurrency(c.valUnitExc), formatCurrency(c.totalExc)));
+		}
 
-		sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "SMS", c.qtdSms, formatCurrency(c.valUnitSms), formatCurrency(c.totalSms)));
+		if (c.qtdSms > 0) {
+			sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "SMS", c.qtdSms, formatCurrency(c.valUnitSms), formatCurrency(c.totalSms)));
+		}
+
+		// NF-e (Nota Fiscal Eletrônica)
+		if (c.qtdNf > 0) {
+			sb.append(String.format("%-30s\t%-12d\t%-18s\t%s\n", "NF-e", c.qtdNf, formatCurrency(c.valUnitNf), formatCurrency(c.totalNf)));
+		}
 
 		sb.append("\t\tTOTAL\t").append(formatCurrency(c.totalFinal)).append("\n\n");
 		sb.append("Em caso de dúvidas, estamos à disposição.\n\n");

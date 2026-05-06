@@ -24,7 +24,7 @@ public class EmailService {
 
 	private static final String SMTP_HOST = "smtp.zoho.com";
 	private static final int SMTP_PORT = 587;
-	private static final String PERIORO = "03/2026";
+	private static final String PERIORO = "04/2026";
 	
 
 	private static final NumberFormat currencyFormat = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
@@ -93,25 +93,47 @@ public class EmailService {
 		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Mensalidade</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>-</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>-</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
 		    formatCurrency(c.mensalidade)));
 
-		sb.append(String.format(
-		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Consultas Boa Vista</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
-		    c.qtdConsultas, formatCurrency(c.valUnitConsulta), formatCurrency(c.totalConsultas)));
+		// Consultas
+		if (c.qtdConsultas > 0) {
+		    sb.append(String.format(
+		        "<tr><td style='padding:8px;border:1px solid #ddd;'>Consultas Boa Vista</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		        c.qtdConsultas, formatCurrency(c.valUnitConsulta), formatCurrency(c.totalConsultas)));
+		}
 
-		sb.append(String.format(
-		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Serasa</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
-		    c.qtdSerasa, formatCurrency(c.valUnitSerasa), formatCurrency(c.totalSerasa)));
+		// Serasa
+		if (c.qtdSerasa > 0) {
+		    sb.append(String.format(
+		        "<tr><td style='padding:8px;border:1px solid #ddd;'>Serasa</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		        c.qtdSerasa, formatCurrency(c.valUnitSerasa), formatCurrency(c.totalSerasa)));
+		}
 
-		sb.append(String.format(
-		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Negativação</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
-		    c.qtdNeg, formatCurrency(c.valUnitNeg), formatCurrency(c.totalNeg)));
+		// Negativação
+		if (c.qtdNeg > 0) {
+		    sb.append(String.format(
+		        "<tr><td style='padding:8px;border:1px solid #ddd;'>Negativação</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		        c.qtdNeg, formatCurrency(c.valUnitNeg), formatCurrency(c.totalNeg)));
+		}
 
-		sb.append(String.format(
-		    "<tr><td style='padding:8px;border:1px solid #ddd;'>Exclusão de Negativação</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
-		    c.qtdExc, formatCurrency(c.valUnitExc), formatCurrency(c.totalExc)));
+		// Exclusão de Negativação
+		if (c.qtdExc > 0) {
+		    sb.append(String.format(
+		        "<tr><td style='padding:8px;border:1px solid #ddd;'>Exclusão de Negativação</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		        c.qtdExc, formatCurrency(c.valUnitExc), formatCurrency(c.totalExc)));
+		}
 
-		sb.append(String.format(
-		    "<tr><td style='padding:8px;border:1px solid #ddd;'>SMS</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
-		    c.qtdSms, formatCurrency(c.valUnitSms), formatCurrency(c.totalSms)));
+		// SMS
+		if (c.qtdSms > 0) {
+		    sb.append(String.format(
+		        "<tr><td style='padding:8px;border:1px solid #ddd;'>SMS</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		        c.qtdSms, formatCurrency(c.valUnitSms), formatCurrency(c.totalSms)));
+		}
+
+		// NF-e (Nota Fiscal Eletrônica)
+		if (c.qtdNf > 0) {
+		    sb.append(String.format(
+		        "<tr><td style='padding:8px;border:1px solid #ddd;'>NF-e</td><td style='text-align:center;padding:8px;border:1px solid #ddd;'>%d</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
+		        c.qtdNf, formatCurrency(c.valUnitNf), formatCurrency(c.totalNf)));
+		}
 
 		sb.append(String.format(
 		    "<tr style='background-color:#f9f9f9;font-weight:bold;'><td colspan='3' style='text-align:right;padding:8px;border:1px solid #ddd;'>TOTAL</td><td style='text-align:right;padding:8px;border:1px solid #ddd;'>%s</td></tr>",
